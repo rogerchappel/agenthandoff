@@ -45,6 +45,10 @@ agenthandoff validate HANDOFF.md
 - Explicit command logs passed with `--log`.
 - Human-supplied summary, tests, risks, and next steps.
 
+## JSON packet
+
+Automation can read `.agenthandoff/handoff.json`. See [docs/SCHEMA.md](docs/SCHEMA.md) for the stable top-level fields.
+
 ## Local-first promise
 
 The CLI makes no network calls. It reads the current working tree, local git metadata, package files, and command logs you explicitly provide.
