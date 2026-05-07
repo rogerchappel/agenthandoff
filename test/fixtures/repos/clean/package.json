@@ -1,0 +1,1 @@
+{"name":"clean-fixture","scripts":{"test":"node --test"}}
