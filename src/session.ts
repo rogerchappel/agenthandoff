@@ -5,7 +5,7 @@ import type { SessionInfo } from "./types.js";
 
 export interface StartOptions {
   cwd: string;
-  title?: string;
+  title?: string | undefined;
   notes?: string[];
 }
 

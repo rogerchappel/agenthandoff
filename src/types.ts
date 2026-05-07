@@ -21,20 +21,20 @@ export interface GitFacts {
   branch: string;
   head: string;
   headShort: string;
-  upstream?: string;
+  upstream?: string | undefined;
   ahead: number;
   behind: number;
   dirty: boolean;
   statusShort: string;
   recentCommits: string[];
-  startedFrom?: string;
+  startedFrom?: string | undefined;
   staleStartRef: boolean;
 }
 
 export interface PackageFacts {
   manager: "npm" | "pnpm" | "yarn" | "bun" | "unknown";
-  name?: string;
-  version?: string;
+  name?: string | undefined;
+  version?: string | undefined;
   scripts: Record<string, string>;
 }
 
@@ -43,7 +43,7 @@ export interface SessionInfo {
   createdAt: string;
   cwd: string;
   title: string;
-  startedFrom?: string;
+  startedFrom?: string | undefined;
   notes: string[];
 }
 
