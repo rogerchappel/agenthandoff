@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.agenthandoff/
+HANDOFF.md
+*.tgz
+.DS_Store
+coverage/
