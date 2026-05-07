@@ -13,12 +13,12 @@
 ## Implementation Tasks
 
 - [x] Add task and orchestration docs.
-- [ ] Add package metadata and TypeScript toolchain.
-- [ ] Implement CLI command router.
-- [ ] Implement git/package/command-log collectors.
-- [ ] Implement Markdown and JSON renderers.
-- [ ] Implement validation rules.
-- [ ] Add fixture repos and command logs.
-- [ ] Add unit and integration tests.
-- [ ] Add README, examples, security, contributing, and scripts.
+- [x] Add package metadata and TypeScript toolchain.
+- [x] Implement CLI command router.
+- [x] Implement git/package/command-log collectors.
+- [x] Implement Markdown and JSON renderers.
+- [x] Implement validation rules.
+- [x] Add fixture repos and command logs.
+- [x] Add unit and integration tests.
+- [x] Add README, examples, security, contributing, and scripts.
 - [ ] Run verification and publish.
