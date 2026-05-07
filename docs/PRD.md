@@ -1,6 +1,6 @@
 # agenthandoff
 
-Status: in-progress
+Status: shipped MVP
 Decision: selected for 2026-05-08 OSS factory run
 
 ## Scorecard

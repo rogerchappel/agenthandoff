@@ -21,4 +21,4 @@
 - [x] Add fixture repos and command logs.
 - [x] Add unit and integration tests.
 - [x] Add README, examples, security, contributing, and scripts.
-- [ ] Run verification and publish.
+- [x] Run verification and publish.
