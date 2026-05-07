@@ -1,0 +1,24 @@
+{
+  "name": "agenthandoff",
+  "schemaVersion": "0.1.0",
+  "commands": {
+    "start": {
+      "writes": [".agenthandoff/session.md", ".agenthandoff/session.json"],
+      "purpose": "Open a durable local handoff session."
+    },
+    "capture": {
+      "writes": [".agenthandoff/capture.json"],
+      "purpose": "Collect git, package, changed-file, command-log, and stale-ref facts."
+    },
+    "finish": {
+      "writes": ["HANDOFF.md", ".agenthandoff/handoff.json"],
+      "purpose": "Render the final takeover packet."
+    },
+    "validate": {
+      "reads": ["HANDOFF.md"],
+      "purpose": "Check required sections and stale git refs."
+    }
+  },
+  "localFirst": true,
+  "network": false
+}
