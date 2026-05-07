@@ -4,13 +4,13 @@
   "description": "Local-first handoff packets for humans and coding agents.",
   "type": "module",
   "bin": {
-    "agenthandoff": "./dist/cli.js"
+    "agenthandoff": "./dist/src/cli.js"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/src/index.d.ts",
       "import": "./dist/index.js"
     }
   },
