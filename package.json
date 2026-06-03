@@ -44,7 +44,15 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.19.19",
     "typescript": "^5.7.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rogerchappel/agenthandoff.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rogerchappel/agenthandoff/issues"
+  },
+  "homepage": "https://github.com/rogerchappel/agenthandoff#readme"
 }
