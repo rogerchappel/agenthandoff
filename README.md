@@ -71,3 +71,14 @@ bash scripts/validate.sh
 ## Security
 
 Please report vulnerabilities privately using the process in [SECURITY.md](SECURITY.md).
+
+## Verify
+
+Run local verification before opening a PR or publishing:
+
+```bash
+npm test
+npm run release:check
+```
+
+`release:check` runs type-checking, build, smoke tests, and a dry-run `npm pack` to ensure everything ships cleanly.
