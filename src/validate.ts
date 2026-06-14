@@ -30,6 +30,15 @@ export function validateMarkdown(markdown: string): ValidationResult {
     const pattern = new RegExp(`^## ${escapeRegExp(section)}\\s*$`, "m");
     if (!pattern.test(markdown)) issues.push(error("markdown.missingSection", `Missing required section: ${section}.`));
   }
+  if (sectionHasPlaceholder(markdown, "Summary", "No summary captured.")) {
+    issues.push(error("markdown.summaryPlaceholder", "Summary section still contains the default placeholder."));
+  }
+  if (sectionHasPlaceholder(markdown, "Next Steps", "No next steps captured.")) {
+    issues.push(error("markdown.nextStepsPlaceholder", "Next Steps section still contains the default placeholder."));
+  }
+  if (sectionHasPlaceholder(markdown, "Risks", "No risks captured.")) {
+    issues.push(warn("markdown.risksPlaceholder", "Risks section still contains the default placeholder."));
+  }
   const staleLine = markdown.match(/^- Stale start ref:\s*(.+)$/m)?.[1]?.trim().toLowerCase();
   if (staleLine === "yes") issues.push(warn("git.staleStartRef", "Handoff reports a stale start ref."));
   const failedCommand = /^- .*: failed \(/m.test(markdown);
@@ -47,4 +56,10 @@ function warn(code: string, message: string): ValidationIssue {
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function sectionHasPlaceholder(markdown: string, section: string, placeholder: string): boolean {
+  const sectionPattern = new RegExp(`^## ${escapeRegExp(section)}\\s*$([\\s\\S]*?)(?=^##\\s|\\z)`, "m");
+  const body = markdown.match(sectionPattern)?.[1] ?? "";
+  return body.split("\n").some((line) => line.trim() === `- ${placeholder}`);
 }
