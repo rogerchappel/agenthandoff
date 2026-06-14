@@ -13,3 +13,22 @@ test("validateMarkdown rejects missing sections", () => {
   assert.equal(result.ok, false);
   assert.ok(result.issues.some((issue) => issue.code === "markdown.missingSection"));
 });
+
+test("validateMarkdown rejects default summary and next-step placeholders", () => {
+  const markdown = valid
+    .replace("- Done", "- No summary captured.")
+    .replace("- Ship", "- No next steps captured.");
+  const result = validateMarkdown(markdown);
+
+  assert.equal(result.ok, false);
+  assert.ok(result.issues.some((issue) => issue.code === "markdown.summaryPlaceholder"));
+  assert.ok(result.issues.some((issue) => issue.code === "markdown.nextStepsPlaceholder"));
+});
+
+test("validateMarkdown warns on default risk placeholder", () => {
+  const markdown = valid.replace("- None\n\n## Next Steps", "- No risks captured.\n\n## Next Steps");
+  const result = validateMarkdown(markdown);
+
+  assert.equal(result.ok, true);
+  assert.ok(result.issues.some((issue) => issue.code === "markdown.risksPlaceholder"));
+});
