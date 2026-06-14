@@ -14,3 +14,7 @@ Stable top-level fields:
 - `commandLogs`: explicit log files with command, exit code, status, and output preview.
 - `summary`, `tests`, `risks`, `nextSteps`: handoff narrative fields.
 - `validation`: machine-readable validation result.
+
+Markdown validation rejects untouched summary and next-step placeholders, and
+warns on the default risks placeholder, so a generated packet is not mistaken
+for a reviewed takeover brief.
