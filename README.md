@@ -53,6 +53,13 @@ Automation can read `.agenthandoff/handoff.json`. See [docs/SCHEMA.md](docs/SCHE
 
 The CLI makes no network calls. It reads the current working tree, local git metadata, package files, and command logs you explicitly provide.
 
+## Limitations
+
+- `agenthandoff` records local evidence; it does not prove that omitted logs, untracked files, or remote branches are complete.
+- Stale-ref and failed-command warnings are heuristics for handoff review, not a replacement for rerunning the project test suite.
+- Command logs may contain secrets or private data. Review generated Markdown and JSON before sharing them outside the repository.
+- The tool does not create commits, push branches, open pull requests, or enforce permissions.
+
 ## Examples
 
 See [`examples/basic`](examples/basic) and [`examples/agent-to-agent`](examples/agent-to-agent).
