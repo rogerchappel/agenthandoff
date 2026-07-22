@@ -2,32 +2,32 @@
 
 Local-first handoff packets for humans and coding agents. `agenthandoff` captures repository facts, changed files, package scripts, command logs, stale refs, risks, and next steps into a Markdown takeover brief plus JSON for orchestration.
 
-## Install
+## Run from source
 
 ```sh
-npm install -g agenthandoff
-```
-
-Or run from a checkout:
-
-```sh
-npm install
+git clone https://github.com/rogerchappel/agenthandoff.git
+cd agenthandoff
+npm ci
 npm run build
-node dist/cli.js --help
+export AGENTHANDOFF_CLI="$PWD/dist/src/cli.js"
+node "$AGENTHANDOFF_CLI" --help
 ```
+
+The package is not currently published to npm. Keep `AGENTHANDOFF_CLI` set when
+running the CLI from another repository.
 
 ## Quick start
 
 ```sh
-agenthandoff start --title "Finish auth refactor" --note "Parser tests are the current blocker"
+node "$AGENTHANDOFF_CLI" start --title "Finish auth refactor" --note "Parser tests are the current blocker"
 npm test 2>&1 | tee .agenthandoff/npm-test.log
-agenthandoff capture --log .agenthandoff/npm-test.log
-agenthandoff finish \
+node "$AGENTHANDOFF_CLI" capture --log .agenthandoff/npm-test.log
+node "$AGENTHANDOFF_CLI" finish \
   --log .agenthandoff/npm-test.log \
   --summary "Auth parser refactor is partially complete" \
   --risk "Session start ref may be stale after new commits" \
   --next "Run npm run check and inspect parser.test.ts"
-agenthandoff validate HANDOFF.md
+node "$AGENTHANDOFF_CLI" validate HANDOFF.md
 ```
 
 ## Commands
