@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { collectGitFacts } from "./git.js";
+import { collectGitFacts, gitRoot } from "./git.js";
 import { ensureDir, sessionJsonPath, sessionMarkdownPath, stateDir, writeJson, writeText } from "./fs.js";
 import type { SessionInfo } from "./types.js";
 
@@ -10,18 +10,19 @@ export interface StartOptions {
 }
 
 export async function startSession(options: StartOptions): Promise<SessionInfo> {
-  const git = await collectGitFacts(options.cwd);
+  const root = await gitRoot(options.cwd);
+  const git = await collectGitFacts(root);
   const session: SessionInfo = {
     id: randomUUID(),
     createdAt: new Date().toISOString(),
-    cwd: options.cwd,
+    cwd: root,
     title: options.title ?? "Agent handoff session",
     startedFrom: git.head,
     notes: options.notes ?? []
   };
-  await ensureDir(stateDir(options.cwd));
-  await writeJson(sessionJsonPath(options.cwd), session);
-  await writeText(sessionMarkdownPath(options.cwd), renderSession(session));
+  await ensureDir(stateDir(root));
+  await writeJson(sessionJsonPath(root), session);
+  await writeText(sessionMarkdownPath(root), renderSession(session));
   return session;
 }
 
