@@ -32,7 +32,7 @@ node "$AGENTHANDOFF_CLI" validate HANDOFF.md
 
 ## Commands
 
-- `agenthandoff start` creates `.agenthandoff/session.md` and `.agenthandoff/session.json`.
+- `agenthandoff start` creates `.agenthandoff/session.md` and `.agenthandoff/session.json` at the repository root, even when run from a subdirectory.
 - `agenthandoff capture` writes `.agenthandoff/capture.json` using local git/package/log facts.
 - `agenthandoff finish` writes `HANDOFF.md` and `.agenthandoff/handoff.json`.
 - `agenthandoff validate HANDOFF.md` checks required sections, stale refs, and failed command logs.

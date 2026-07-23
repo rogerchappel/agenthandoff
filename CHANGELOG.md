@@ -7,6 +7,10 @@ format and uses semantic versioning when versioned releases are published.
 
 ## [Unreleased]
 
+### Fixed
+
+- Keep session state at the repository root when commands run from a subdirectory.
+
 ### Added
 
 - Initial project setup.
