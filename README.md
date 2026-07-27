@@ -37,6 +37,10 @@ node "$AGENTHANDOFF_CLI" validate HANDOFF.md
 - `agenthandoff finish` writes `HANDOFF.md` and `.agenthandoff/handoff.json`.
 - `agenthandoff validate HANDOFF.md` checks required sections, stale refs, and failed command logs.
 
+The repository root retains the path spelling used to invoke the CLI. This keeps
+artifacts visible in the same workspace on systems such as macOS, where Git may
+canonicalize `/var` paths to `/private/var`.
+
 ## What gets captured
 
 - Branch, HEAD, upstream, ahead/behind, dirty status, recent commits, and start-ref staleness.
