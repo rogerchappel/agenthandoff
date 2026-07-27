@@ -6,6 +6,7 @@ import { capture } from "./capture.js";
 import { finish } from "./finish.js";
 import { startSession } from "./session.js";
 import { validateMarkdown } from "./validate.js";
+import { isMainModule } from "./main-module.js";
 import type { CliOptions } from "./types.js";
 
 const HELP = `agenthandoff\n\nUsage:\n  agenthandoff start [--title text] [--note text]\n  agenthandoff capture [--log path] [--json]\n  agenthandoff finish [--log path] [--summary text] [--test text] [--risk text] [--next text]\n  agenthandoff validate [HANDOFF.md] [--json]\n`;
@@ -56,7 +57,7 @@ export async function runCli(options: CliOptions): Promise<number> {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule(import.meta.url, process.argv[1])) {
   const code = await runCli({ cwd: process.cwd(), args: process.argv.slice(2), stdout: process.stdout, stderr: process.stderr });
   process.exitCode = code;
 }
