@@ -14,7 +14,8 @@ node "$AGENTHANDOFF_CLI" --help
 ```
 
 The package is not currently published to npm. Keep `AGENTHANDOFF_CLI` set when
-running the CLI from another repository.
+running the CLI from another repository. Equivalent executable paths are
+supported, including macOS aliases such as `/tmp` and `/private/tmp`.
 
 ## Quick start
 
