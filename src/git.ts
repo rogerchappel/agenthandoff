@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process";
+import { dirname } from "node:path";
 import { promisify } from "node:util";
 import type { ChangedFile, GitFacts } from "./types.js";
 
@@ -18,8 +19,14 @@ async function gitOr(cwd: string, args: string[], fallback = ""): Promise<string
 }
 
 export async function gitRoot(cwd: string): Promise<string> {
-  const root = await gitOr(cwd, ["rev-parse", "--show-toplevel"]);
-  return root || cwd;
+  const canonicalRoot = await gitOr(cwd, ["rev-parse", "--show-toplevel"]);
+  if (!canonicalRoot) return cwd;
+
+  const prefix = await gitOr(cwd, ["rev-parse", "--show-prefix"]);
+  const depth = prefix.split("/").filter(Boolean).length;
+  let visibleRoot = cwd;
+  for (let index = 0; index < depth; index += 1) visibleRoot = dirname(visibleRoot);
+  return visibleRoot;
 }
 
 export function parseChangedFile(line: string): ChangedFile {
