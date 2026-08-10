@@ -18,10 +18,13 @@ test("finish writes markdown handoff", async () => {
     await writeFile(join(dir, "README.md"), "fixture\n");
     sh(dir, "git add README.md && git commit -m init");
     await startSession({ cwd: dir });
+    await writeFile(join(dir, "review café notes.txt"), "notes\n");
     await finish({ cwd: dir, summary: ["Implemented fixture"], nextSteps: ["Review HANDOFF.md"] });
     const markdown = await readFile(join(dir, "HANDOFF.md"), "utf8");
     assert.match(markdown, /## Summary/);
     assert.match(markdown, /Implemented fixture/);
+    assert.match(markdown, /- review café notes\.txt \(untracked;/);
+    assert.doesNotMatch(markdown, /"review|\\303/);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
