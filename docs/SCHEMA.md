@@ -9,7 +9,8 @@ Stable top-level fields:
 - `repo`: repository name and root.
 - `session`: session id, creation time, title, starting ref, and notes.
 - `git`: branch, HEAD, upstream, ahead/behind, dirty state, recent commits, and stale start-ref flag.
-- `changedFiles`: parsed `git status --short` entries.
+- `changedFiles`: parsed NUL-delimited Git porcelain entries with exact
+  repository-relative paths; rename and copy entries use the destination path.
 - `packageScripts`: detected package manager plus `package.json` scripts.
 - `commandLogs`: explicit log files with command, exit code, status, and output preview.
 - `summary`, `tests`, `risks`, `nextSteps`: handoff narrative fields.

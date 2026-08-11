@@ -45,7 +45,9 @@ canonicalize `/var` paths to `/private/var`.
 ## What gets captured
 
 - Branch, HEAD, upstream, ahead/behind, dirty status, recent commits, and start-ref staleness.
-- Changed files from `git status --short`.
+- Changed files from Git's NUL-delimited porcelain status, preserving exact
+  repository-relative paths (including spaces and non-ASCII characters) and
+  the destination paths of renames and copies.
 - Package manager and `package.json` scripts.
 - Explicit command logs passed with `--log`.
 - Human-supplied summary, tests, risks, and next steps.
