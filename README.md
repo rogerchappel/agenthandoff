@@ -13,6 +13,11 @@ export AGENTHANDOFF_CLI="$PWD/dist/src/cli.js"
 node "$AGENTHANDOFF_CLI" --help
 ```
 
+Flags may appear before or after positional arguments. Boolean flags such as
+`--json` never consume a positional; value flags accept either `--name value`
+or `--name=value` and may be repeated where the command supports multiple
+entries. Unknown flags and missing values are reported as errors.
+
 The package is not currently published to npm. Keep `AGENTHANDOFF_CLI` set when
 running the CLI from another repository. Equivalent executable paths are
 supported, including macOS aliases such as `/tmp` and `/private/tmp`.
