@@ -12,9 +12,9 @@ import type { CliOptions } from "./types.js";
 const HELP = `agenthandoff\n\nUsage:\n  agenthandoff start [--title text] [--note text]\n  agenthandoff capture [--log path] [--json]\n  agenthandoff finish [--log path] [--summary text] [--test text] [--risk text] [--next text]\n  agenthandoff validate [HANDOFF.md] [--json]\n`;
 
 export async function runCli(options: CliOptions): Promise<number> {
-  const parsed = parseArgs(options.args);
   const cwd = options.cwd;
   try {
+    const parsed = parseArgs(options.args);
     if (parsed.command === "help" || parsed.command === "--help" || parsed.command === "-h") {
       options.stdout.write(HELP);
       return 0;

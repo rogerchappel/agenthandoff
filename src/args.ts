@@ -4,8 +4,16 @@ export interface ParsedArgs {
   positionals: string[];
 }
 
+const COMMAND_FLAGS: Record<string, Record<string, "boolean" | "value">> = {
+  start: { title: "value", note: "value" },
+  capture: { log: "value", json: "boolean" },
+  finish: { log: "value", summary: "value", test: "value", risk: "value", next: "value" },
+  validate: { json: "boolean" }
+};
+
 export function parseArgs(argv: string[]): ParsedArgs {
   const [command = "help", ...rest] = argv;
+  const commandFlags = COMMAND_FLAGS[command];
   const flags: Record<string, string[]> = {};
   const positionals: string[] = [];
   for (let index = 0; index < rest.length; index += 1) {
@@ -14,9 +22,17 @@ export function parseArgs(argv: string[]): ParsedArgs {
     if (token.startsWith("--")) {
       const [keyRaw, inlineValue] = token.slice(2).split("=", 2);
       const key = keyRaw ?? "";
+      const kind = commandFlags?.[key];
+      if (!kind) throw new Error(`Unknown flag --${key || "<empty>"} for ${command}. Run agenthandoff --help for usage.`);
+      if (kind === "boolean") {
+        if (inlineValue !== undefined) throw new Error(`Flag --${key} does not accept a value.`);
+        flags[key] = [...(flags[key] ?? []), "true"];
+        continue;
+      }
       const next = rest[index + 1];
-      const value = inlineValue ?? (next && !next.startsWith("--") ? rest[++index] : "true");
-      flags[key] = [...(flags[key] ?? []), value ?? "true"];
+      const value = inlineValue ?? (next && !next.startsWith("--") ? rest[++index] : undefined);
+      if (value === undefined || value === "") throw new Error(`Flag --${key} requires a value.`);
+      flags[key] = [...(flags[key] ?? []), value];
     } else {
       positionals.push(token);
     }
