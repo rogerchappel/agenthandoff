@@ -24,12 +24,14 @@
     "CONTRIBUTING.md"
   ],
   "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test dist/test/**/*.test.js",
     "smoke": "bash scripts/smoke.sh",
     "validate": "bash scripts/validate.sh",
     "package:smoke": "node scripts/package-smoke.mjs",
+    "prepack": "npm run clean && npm run build",
     "release:check": "npm test && npm run check && npm run build && npm run smoke && npm run package:smoke",
     "lint": "npm run check"
   },
