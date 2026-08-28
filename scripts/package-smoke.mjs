@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 const run = (command, args) => {
   const result = spawnSync(command, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
@@ -11,9 +11,10 @@ const run = (command, args) => {
 };
 
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
-if (pkg.scripts?.build) {
-  run('npm', ['run', 'build']);
-}
+const dist = new URL('../dist/', import.meta.url);
+rmSync(dist, { recursive: true, force: true });
+mkdirSync(dist, { recursive: true });
+writeFileSync(new URL('stale-package-smoke.txt', dist), 'npm pack must replace this stale tree\n');
 const output = run('npm', ['pack', '--dry-run', '--json']);
 const [pack] = JSON.parse(output);
 const included = new Set(pack.files.map((file) => file.path));
@@ -51,6 +52,11 @@ if (missing.length > 0) {
   for (const file of missing) {
     console.error(`- ${file}`);
   }
+  process.exit(1);
+}
+
+if (included.has('dist/stale-package-smoke.txt')) {
+  console.error('Package tarball includes stale build output.');
   process.exit(1);
 }
 
