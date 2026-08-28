@@ -100,4 +100,4 @@ npm test
 npm run release:check
 ```
 
-`release:check` runs type-checking, build, smoke tests, and a dry-run `npm pack` to ensure everything ships cleanly.
+`release:check` runs type-checking, build, smoke tests, and a dry-run `npm pack` from a stale build directory. The package `prepack` lifecycle removes old output and rebuilds automatically, so `npm pack` after a clean install includes every declared CLI, module, and type entrypoint without requiring a separate build command.
