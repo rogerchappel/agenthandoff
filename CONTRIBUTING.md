@@ -4,6 +4,10 @@ Thanks for helping improve `agenthandoff`.
 
 ## Development setup
 
+CI runs the complete release and repository validation gates on Node 20 (the
+minimum version declared by the package) and Node 22 (the maintained runtime).
+When a change may depend on Node.js behavior, verify it on both versions.
+
 ```sh
 npm install
 npm test
