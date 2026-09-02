@@ -11,6 +11,13 @@ const COMMAND_FLAGS: Record<string, Record<string, "boolean" | "value">> = {
   validate: { json: "boolean" }
 };
 
+const COMMAND_POSITIONAL_LIMITS: Record<string, number> = {
+  start: 0,
+  capture: 0,
+  finish: 0,
+  validate: 1
+};
+
 export function parseArgs(argv: string[]): ParsedArgs {
   const [command = "help", ...rest] = argv;
   const commandFlags = COMMAND_FLAGS[command];
@@ -36,6 +43,13 @@ export function parseArgs(argv: string[]): ParsedArgs {
     } else {
       positionals.push(token);
     }
+  }
+  const positionalLimit = COMMAND_POSITIONAL_LIMITS[command];
+  if (positionalLimit === 0 && positionals.length > 0) {
+    throw new Error(`${command} does not accept positional arguments. Run agenthandoff --help for usage.`);
+  }
+  if (positionalLimit !== undefined && positionals.length > positionalLimit) {
+    throw new Error(`${command} accepts at most one positional path. Run agenthandoff --help for usage.`);
   }
   return { command, flags, positionals };
 }
