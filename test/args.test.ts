@@ -2,17 +2,24 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { parseArgs } from "../src/args.js";
 
-test("parseArgs collects flags and positionals", () => {
-  const parsed = parseArgs(["finish", "HANDOFF.md", "--log", "test.log", "--risk=stale"]);
-  assert.equal(parsed.command, "finish");
-  assert.deepEqual(parsed.positionals, ["HANDOFF.md"]);
-  assert.deepEqual(parsed.flags.log, ["test.log"]);
-  assert.deepEqual(parsed.flags.risk, ["stale"]);
+test("commands without positional arguments reject operands around flags", () => {
+  const cases: Array<[string, string]> = [["start", "--title"], ["capture", "--log"], ["finish", "--summary"]];
+  for (const [command, validFlag] of cases) {
+    assert.throws(() => parseArgs([command, "unexpected"]), new RegExp(`${command} does not accept positional arguments`));
+    assert.throws(() => parseArgs([command, validFlag, "value", "unexpected"]), new RegExp(`${command} does not accept positional arguments`));
+  }
 });
 
 test("boolean flags preserve validate positionals in either order", () => {
   assert.deepEqual(parseArgs(["validate", "--json", "custom.md"]).positionals, ["custom.md"]);
   assert.deepEqual(parseArgs(["validate", "custom.md", "--json"]).positionals, ["custom.md"]);
+});
+
+test("validate rejects more than one path", () => {
+  assert.throws(
+    () => parseArgs(["validate", "HANDOFF.md", "OTHER.md", "--json"]),
+    /validate accepts at most one positional path/
+  );
 });
 
 test("value flags support repetition and inline values", () => {
