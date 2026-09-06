@@ -3,6 +3,7 @@ import { handoffJsonPath, handoffMarkdownPath, writeJson, writeText } from "./fs
 import { renderMarkdown } from "./render.js";
 import type { HandoffPacket } from "./types.js";
 import { sentence, uniqueNonEmpty } from "./format.js";
+import { validatePacket } from "./validate.js";
 
 export interface FinishOptions extends CaptureOptions {
   summary?: string[];
@@ -17,6 +18,7 @@ export async function finish(options: FinishOptions): Promise<HandoffPacket> {
   if (options.tests?.length) packet.tests = uniqueNonEmpty([...packet.tests, ...options.tests]);
   if (options.risks?.length) packet.risks = uniqueNonEmpty(options.risks).map(sentence);
   if (options.nextSteps?.length) packet.nextSteps = uniqueNonEmpty(options.nextSteps).map(sentence);
+  packet.validation = validatePacket(packet);
   const markdown = renderMarkdown(packet);
   await writeText(handoffMarkdownPath(packet.repo.root), markdown);
   await writeJson(handoffJsonPath(packet.repo.root), packet);
