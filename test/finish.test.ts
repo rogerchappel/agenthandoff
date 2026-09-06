@@ -29,3 +29,29 @@ test("finish writes markdown handoff", async () => {
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+test("finish validates normalized overrides before writing artifacts", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "agenthandoff-finish-validation-"));
+  try {
+    sh(dir, "git init && git config user.email test@example.com && git config user.name Test");
+    await writeFile(join(dir, "README.md"), "fixture\n");
+    sh(dir, "git add README.md && git commit -m init");
+
+    const packet = await finish({
+      cwd: dir,
+      summary: [" ", "\t"],
+      nextSteps: ["  ", "\n"]
+    });
+    const markdown = await readFile(join(dir, "HANDOFF.md"), "utf8");
+    const json = JSON.parse(await readFile(join(dir, ".agenthandoff", "handoff.json"), "utf8"));
+
+    assert.equal(packet.validation.ok, false);
+    assert.deepEqual(packet.validation.issues.map((issue) => issue.code), ["summary.empty", "nextSteps.empty"]);
+    assert.deepEqual(json.validation, packet.validation);
+    assert.match(markdown, /- OK: no/);
+    assert.match(markdown, /ERROR summary\.empty/);
+    assert.match(markdown, /ERROR nextSteps\.empty/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
