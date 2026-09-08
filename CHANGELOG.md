@@ -13,6 +13,7 @@ format and uses semantic versioning when versioned releases are published.
 
 ### Added
 
+- Test Node.js 24 in CI and use it for release automation while retaining Node.js 20 as the minimum supported runtime.
 - Initial project setup.
 
 ## Release Links
