@@ -10,6 +10,9 @@ format and uses semantic versioning when versioned releases are published.
 ### Fixed
 
 - Keep session state at the repository root when commands run from a subdirectory.
+- Declare `"types": ["node"]` in `tsconfig.json` so TypeScript 7 resolves
+  Node.js types; the 7.0.2 bump had broken `tsc` with ~80 TS2591/TS2339/TS7006
+  errors on `main`.
 
 ### Added
 
