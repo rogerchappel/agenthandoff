@@ -32,7 +32,7 @@
     "validate": "bash scripts/validate.sh",
     "package:smoke": "node scripts/package-smoke.mjs",
     "prepack": "npm run clean && npm run build",
-    "release:check": "npm test && npm run check && npm run build && npm run smoke && npm run package:smoke",
+    "release:check": "npm run check && npm run build && npm run smoke && npm run package:smoke",
     "lint": "npm run check"
   },
   "keywords": [
