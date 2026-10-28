@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest a focused improvement to agenthandoff
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "Review [Contributing](../../blob/main/CONTRIBUTING.md) before proposing changes."
+  - type: textarea
+    id: need
+    attributes:
+      label: Problem or use case
+      description: What need is not currently met?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe a focused solution and alternatives considered.
+    validations:
+      required: true

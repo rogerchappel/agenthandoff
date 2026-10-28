@@ -2,6 +2,8 @@
 
 -
 
+Please review [Contributing](../blob/main/CONTRIBUTING.md) and link the related issue when applicable.
+
 ## Verification
 
 - [ ] Tests or checks run:

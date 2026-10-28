@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a reproducible problem with agenthandoff
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, review [Contributing](../../blob/main/CONTRIBUTING.md) and search existing issues.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: Include minimal commands and sanitized example input.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: agenthandoff and Node.js versions
+    validations:
+      required: true
