@@ -93,8 +93,9 @@ Please report vulnerabilities privately using the process in [SECURITY.md](SECUR
 
 ## Verify
 
-AgentHandoff supports Node.js 20 and newer. CI runs the full release check on
-Node.js 20, 22, and 24; release automation uses Node.js 24.
+AgentHandoff declares Node.js 20.0.0 and newer in `package.json`. CI runs the
+full release check on Node.js 20, 22, 24, and 26 to cover the declared minimum
+and current even-numbered release lines. Release automation currently uses Node.js 24.
 
 Run local verification before opening a PR or publishing:
 
