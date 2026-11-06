@@ -36,6 +36,11 @@ node "$AGENTHANDOFF_CLI" finish \
 node "$AGENTHANDOFF_CLI" validate HANDOFF.md
 ```
 
+The `tee` command creates or overwrites `.agenthandoff/npm-test.log` and keeps
+it in the repository after the command exits. Test output can contain sensitive
+data, so review the log before sharing or committing it; remove it when it is
+no longer needed, and apply your project's retention policy if you keep it.
+
 ## Commands
 
 - `agenthandoff start` creates `.agenthandoff/session.md` and `.agenthandoff/session.json` at the repository root, even when run from a subdirectory.
