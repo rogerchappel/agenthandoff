@@ -59,7 +59,7 @@ function escapeRegExp(value: string): string {
 }
 
 function sectionHasPlaceholder(markdown: string, section: string, placeholder: string): boolean {
-  const sectionPattern = new RegExp(`^## ${escapeRegExp(section)}\\s*$([\\s\\S]*?)(?=^##\\s|\\z)`, "m");
+  const sectionPattern = new RegExp(`^## ${escapeRegExp(section)}\\s*$([\\s\\S]*?)(?=^##\\s|$(?![\\s\\S]))`, "m");
   const body = markdown.match(sectionPattern)?.[1] ?? "";
   return body.split("\n").some((line) => line.trim() === `- ${placeholder}`);
 }
