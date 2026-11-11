@@ -25,6 +25,20 @@ test("validateMarkdown rejects default summary and next-step placeholders", () =
   assert.ok(result.issues.some((issue) => issue.code === "markdown.nextStepsPlaceholder"));
 });
 
+test("placeholder detection does not cross into later sections", () => {
+  const markdown = valid.replace("- Done", "- Work is done").replace("- Ship", "- No next steps captured.");
+  const result = validateMarkdown(markdown);
+
+  assert.equal(result.issues.some((issue) => issue.code === "markdown.summaryPlaceholder"), false);
+});
+
+test("placeholder detection ends at the next section heading", () => {
+  const markdown = valid.replace("- Done", "- Work is done\n\n## Notes\n\n- No summary captured.");
+  const result = validateMarkdown(markdown);
+
+  assert.equal(result.issues.some((issue) => issue.code === "markdown.summaryPlaceholder"), false);
+});
+
 test("validateMarkdown warns on default risk placeholder", () => {
   const markdown = valid.replace("- None\n\n## Next Steps", "- No risks captured.\n\n## Next Steps");
   const result = validateMarkdown(markdown);
