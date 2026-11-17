@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
 export async function ensureDir(path: string): Promise<void> {
@@ -6,8 +6,7 @@ export async function ensureDir(path: string): Promise<void> {
 }
 
 export async function writeJson(path: string, value: unknown): Promise<void> {
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  await atomicWrite(path, `${JSON.stringify(value, null, 2)}\n`);
 }
 
 export async function readJson<T>(path: string): Promise<T> {
@@ -15,8 +14,19 @@ export async function readJson<T>(path: string): Promise<T> {
 }
 
 export async function writeText(path: string, value: string): Promise<void> {
+  await atomicWrite(path, value);
+}
+
+async function atomicWrite(path: string, value: string): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, value, "utf8");
+  const temporary = join(dirname(path), `.${path.split(/[\\/]/).pop()}.${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`);
+  try {
+    await writeFile(temporary, value, { encoding: "utf8", flag: "wx" });
+    await rename(temporary, path);
+  } catch (error) {
+    await unlink(temporary).catch(() => undefined);
+    throw error;
+  }
 }
 
 export async function readText(path: string): Promise<string> {
