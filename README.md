@@ -84,7 +84,7 @@ See [`examples/basic`](examples/basic) and [`examples/agent-to-agent`](examples/
 ## Development
 
 ```sh
-npm install
+npm ci
 npm test
 npm run check
 npm run build
