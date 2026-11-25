@@ -14,24 +14,28 @@ const run = (command, args, options = {}) => {
 };
 
 const root = dirname(fileURLToPath(import.meta.url));
-const pkg = JSON.parse(readFileSync(join(root, '../package.json'), 'utf8'));
+const project = join(root, '..');
+const pkg = JSON.parse(readFileSync(join(project, 'package.json'), 'utf8'));
 const temp = mkdtempSync(join(tmpdir(), 'agenthandoff-package-smoke-'));
 try {
   const stage = join(temp, 'package');
-  mkdirSync(join(stage, 'dist/src'), { recursive: true });
-  cpSync(join(root, '../dist'), join(stage, 'dist'), { recursive: true });
+  mkdirSync(join(stage, 'dist'), { recursive: true });
+  cpSync(join(project, 'dist'), join(stage, 'dist'), { recursive: true });
   writeFileSync(join(stage, 'dist/stale-package-smoke.txt'), 'npm pack must exclude this stale tree\n');
   const stagedPkg = { ...pkg, scripts: {} };
   delete stagedPkg.devDependencies;
   delete stagedPkg.engines;
   writeFileSync(join(stage, 'package.json'), JSON.stringify(stagedPkg));
   for (const entry of ['examples', 'README.md', 'LICENSE', 'SECURITY.md', 'CHANGELOG.md', 'CONTRIBUTING.md']) {
-    const source = join(root, '..', entry);
+    const source = join(project, entry);
     if (existsSync(source)) cpSync(source, join(stage, entry), { recursive: true });
   }
-  const output = run('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { cwd: stage, env: { ...process.env, npm_config_cache: join(temp, 'cache') } });
-  const [pack] = JSON.parse(output);
-  const included = new Set(pack.files.map((file) => file.path));
+  const env = { ...process.env, npm_config_cache: join(temp, 'cache') };
+  const archive = run('npm', ['pack', '--json'], { cwd: stage, env }).trim();
+  const [pack] = JSON.parse(archive);
+  const tarball = join(stage, pack.filename);
+  const listing = run('tar', ['-tzf', tarball]);
+  const included = new Set(listing.split(/\r?\n/).filter(Boolean).map((path) => path.replace(/^package\//, '')));
 
   const expected = new Set();
   const addPath = (value) => {
